@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>before edit</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+</head>
+<body>
+        <div class="main-content">
+                <div class="container-fluid">
+                   
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header card-header-primary">
+                                    <h4 class="card-title ">Doctors Table</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table" id="dataTable" border="3">
+                                            <thead class=" text-primary">
+                                                <th> ID</th>
+                                                <th>Name</th>
+                                                <th>Quote</th>
+                                                <th>Photo</th>
+                                            </thead>
+                                        <!-- loop    <tbody *ngFor="let car of cars" [attr.id]="car.id"> -->
+                                                <!-- <tr >
+                                                    <td> {{doctor.id}} </td>
+                                                    <td> {{doctor.name}} </td>
+                                                    <td> {{doctor.Quote}} </td>
+                                                    <td> {{doctor.Photo}} </td>
+                                        
+                                                </tr> -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+
+    
+</body>
+<script>
+    fetch('/before')   //45.32.179.219
+    .then(res => res.json())
+    .then(formated => {
+        let arr = formated.data ;
+        
+        arr.forEach(doc => {
+            let tr = document.createElement('tr');
+            let tdID  = document.createElement('td');
+            let tdName  = document.createElement('td');
+            let tdQuote  = document.createElement('td');
+            let tdPhoto  = document.createElement('td');
+            // , tdName , tdQuote , tdPhoto
+        tdID.innerText = doc.id ;
+        tdName.innerText = doc.Name ;
+        tdQuote.innerText = doc.Quote ;
+
+        let link = document.createElement('a') ;
+        link.innerText = doc.Photo , link.href = doc.Photo ; link.target = "_blank";
+        tdPhoto.appendChild(link);
+
+        tr.appendChild(tdID);
+        tr.appendChild(tdName);
+        tr.appendChild(tdQuote);
+        tr.appendChild(tdPhoto);
+        document.getElementById('dataTable').appendChild(tr) ;  
+        })
+       
+    })
+    .catch(err => console.log(err));
+</script>
+</html>

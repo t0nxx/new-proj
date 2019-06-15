@@ -8,9 +8,13 @@ const mysql = require('mysql2/promise');
 const fileUpload= require('express-fileupload');
 const {makePath}=require('./photopath');
 const path = require('path');
-require('dotenv').config()
+const cors = require('cors') ;
+require('dotenv').config();
 
+app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(__dirname + "/public"));
 app.use('/uploads',express.static(__dirname + '/uploads'));
 
 const connection = mysql.createPool({
@@ -18,6 +22,7 @@ const connection = mysql.createPool({
   user     : process.env.user,
   password : process.env.password,
   database : process.env.database ,
+  multipleStatements:true ,
   connectionLimit: 10
 });
 
@@ -74,7 +79,7 @@ app.post('/register',  async (req, res) => {
 app.post('/upload' , fileUpload() , async(req,res)=>{
   try {
 
-    let {doctorName,doctorCode} = req.body ;
+    let {doctorName,doctorQuote} = req.body ;
     let doctorPhoto = 'No Image' ;
     
       if(!req.files){
@@ -82,7 +87,7 @@ app.post('/upload' , fileUpload() , async(req,res)=>{
       }else{
         doctorPhoto = makePath(req.files.doctorPhoto);
       }  
-      await connection.query('INSERT INTO `doctors_photos` (`Name`, `Code`, `Photo`) VALUES (?, ?, ?)',[doctorName,doctorCode,doctorPhoto]);
+      await connection.query('INSERT INTO `doctors_photos` (`Name`, `Quote`, `Photo`) VALUES (?, ?, ?)',[doctorName,doctorQuote,doctorPhoto]);
       res.send('Successfully added');
   } catch (error) {
     res.send({Error : error.message});
@@ -117,16 +122,13 @@ app.post('/after' , fileUpload() , async(req,res)=>{
 
 app.get('/show' ,async (req,res)=>{
   try {
-      let lastElemt = req.query.last || 10 ;
-    
-      const [rows] = await connection.query(`SELECT * FROM photos WHERE id > ${lastElemt} LIMIT 10 `);
-    
+      let lastElemt = req.query.last || 0 ;
+      const [rows] = await connection.query(`SELECT * from photos LIMIT ${lastElemt},10 `) ;
+      const [remain] = await connection.query(`SELECT COUNT(*) - ${parseInt(lastElemt) + 10}  As remaining FROM photos `);
       let last = rows[rows.length -1];
-      res.send({data : rows , last : last.id });
+      res.send({data : rows , last : last.id  , remaining : remain[0].remaining});
   } catch (error) {
-    if(error.message == `Cannot read property 'id' of undefined`){
-      res.send({Error : 'max exceed'});
-    }
+      res.send({Error : error.message});
       
   }
 });

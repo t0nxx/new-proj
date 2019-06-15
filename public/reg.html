@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <img src="images/logo.png" alt="" />
+      <form action="/register" method="POST">
+        <div class="inputs">
+          <div class="input" style="background-image: url(images/doctor.png);">
+            <input type="text" name="doctorName" />
+          </div>
+          <div class="input" style="background-image: url(images/number.png);">
+            <input type="text" name="doctorNumber" />
+          </div>
+          <div
+            class="input"
+            style="background-image: url(images/workplace.png);height: 210px;"
+          >
+            <textarea name="doctorWorkplace"></textarea>
+          </div>
+          <div
+            class="input"
+            style="background-image: url(images/email.png);height: 210px;"
+          >
+            <textarea name="doctorEmail" style="width:63%"></textarea>
+          </div>
+        </div>
+        <div class="submit">
+          <button type="submit"></button>
+        </div>
+      </form>
+      <img src="images/logo2.png" class="logo2" alt="" />
+    </div>
+  </body>
+</html>
