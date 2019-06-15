@@ -123,10 +123,14 @@ app.post('/after' , fileUpload() , async(req,res)=>{
 app.get('/show' ,async (req,res)=>{
   try {
       let lastElemt = req.query.last || 0 ;
-      const [rows] = await connection.query(`SELECT * from photos LIMIT ${lastElemt},10 `) ;
+      
       const [remain] = await connection.query(`SELECT COUNT(*) - ${parseInt(lastElemt) + 10}  As remaining FROM photos `);
+      
+      let remaining  = remain[0].remaining > 0 ? remain[0].remaining  : 0 ;
+      if (remaining < 3 ) lastElemt = 0 ;
+      const [rows] = await connection.query(`SELECT * from photos LIMIT ${lastElemt},10 `) ;
       let last = rows[rows.length -1];
-      res.send({data : rows , last : last.id  , remaining : remain[0].remaining});
+      res.send({data : rows , last : last.id  , remaining});
   } catch (error) {
       res.send({Error : error.message});
       
