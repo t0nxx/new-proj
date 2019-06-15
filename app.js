@@ -130,7 +130,7 @@ app.get('/show' ,async (req,res)=>{
       if (remaining < 3 ) lastElemt = 0 ;
       const [rows] = await connection.query(`SELECT * from photos LIMIT ${lastElemt},10 `) ;
       let last = rows[rows.length -1];
-      res.send({data : rows , last : last.id  , remaining});
+      res.send({data : rows , last : last.id  });
   } catch (error) {
       res.send({Error : error.message});
       
