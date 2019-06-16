@@ -38,7 +38,7 @@ const connection = mysql.createPool({
 //     console.log(arr);
 //     res.send(arr);
 // })
-app.post('/register',  async (req, res) => {
+app.post('/api/register',  async (req, res) => {
 //     try {
 //        //let imgPath = '';
 //        /// config   
@@ -76,7 +76,7 @@ app.post('/register',  async (req, res) => {
     
   })
 
-app.post('/upload' , fileUpload() , async(req,res)=>{
+app.post('/api/upload' , fileUpload() , async(req,res)=>{
   try {
 
     let {doctorName,doctorQuote} = req.body ;
@@ -94,7 +94,7 @@ app.post('/upload' , fileUpload() , async(req,res)=>{
   }
 });
 
-app.get('/before' ,async (req,res)=>{
+app.get('/api/before' ,async (req,res)=>{
   try {
       const [rows] = await connection.query(`SELECT * FROM doctors_photos`);
       res.send({data : rows});
@@ -103,7 +103,7 @@ app.get('/before' ,async (req,res)=>{
   }
 });
 
-app.post('/after' , fileUpload() , async(req,res)=>{
+app.post('/api/after' , fileUpload() , async(req,res)=>{
   try {
     let doctorPhoto = 'No Image' ;
     
@@ -120,7 +120,7 @@ app.post('/after' , fileUpload() , async(req,res)=>{
   }
 });
 
-app.get('/show' ,async (req,res)=>{
+app.get('/api/show' ,async (req,res)=>{
   try {
       let lastElemt = req.query.last || 0 ;
       
@@ -137,7 +137,7 @@ app.get('/show' ,async (req,res)=>{
   }
 });
 
-app.get('/export' ,async (req,res)=>{
+app.get('/api/export' ,async (req,res)=>{
     try {
       const workbook = new Excel.Workbook();
       const sheet = workbook.addWorksheet('Doctors Sheet');
