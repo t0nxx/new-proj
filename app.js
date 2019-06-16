@@ -69,7 +69,7 @@ app.post('/register',  async (req, res) => {
       let {doctorName,doctorNumber,doctorEmail,doctorWorkplace} = req.body ;
        console.log(req.body);
       await connection.query('INSERT INTO `doctors` (`Name`, `Number`, `Email`, `WorkSpace`) VALUES (?, ?, ?, ?)',[doctorName,doctorNumber,doctorEmail,doctorWorkplace]);
-        res.send('Successfully uploaded '); 
+      res.redirect(req.originalUrl+'.html'); 
     } catch (error) {
         res.status(400).send(error);
     }
@@ -88,7 +88,7 @@ app.post('/upload' , fileUpload() , async(req,res)=>{
         doctorPhoto = makePath(req.files.doctorPhoto);
       }  
       await connection.query('INSERT INTO `doctors_photos` (`Name`, `Quote`, `Photo`) VALUES (?, ?, ?)',[doctorName,doctorQuote,doctorPhoto]);
-      res.send('Successfully added');
+      res.redirect(req.originalUrl+'.html');
   } catch (error) {
     res.send({Error : error.message});
   }
@@ -113,7 +113,7 @@ app.post('/after' , fileUpload() , async(req,res)=>{
         doctorPhoto = makePath(req.files.doctorPhoto);
       }  
       await connection.query('INSERT INTO `photos` (`Photo`) VALUES (?)',[doctorPhoto]);
-      res.send('Successfully added');
+      res.redirect(req.originalUrl+'.html');
 
   } catch (error) {
     res.send({Error : error.message});
